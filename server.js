@@ -49,6 +49,12 @@ app.get('/projects', async (req, res) => {
     res.render('projects', { title });
 });
 
+
+app.get('/categories', async (req, res) => {
+    const title = 'Service Project Categories';
+    res.render('categories', { title });
+});
+
 /**
  * Start the server
  */

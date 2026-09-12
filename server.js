@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { testConnection } from './cse340-course/src/models/db.js';
+import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
 
 console.log('DATABASE_URL loaded:', process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 30) + '...' : 'UNDEFINED');
@@ -27,13 +27,14 @@ const app = express();
 
 
 // Set EJS as the templating engine
-app.use(express.static(path.join(__dirname, 'cse340-course/public')));
 app.set('view engine', 'ejs');
 
 // Tell Express where to find your templates
-app.set('views', path.join(__dirname, 'cse340-course/src/views'));
+app.set('views', path.join(__dirname, 'src/views'));
 console.log('VIEWS DIRECTORY:', app.get('views'));
 
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Serve static files from the public directory

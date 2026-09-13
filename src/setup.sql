@@ -57,3 +57,72 @@ VALUES
 ((SELECT organization_id FROM organization WHERE name = 'UnityServe Volunteers'), 'Blood Donation Drive', 'Partnering with the Red Cross to collect blood donations.', 'First Baptist Church', '2026-07-05'),
 ((SELECT organization_id FROM organization WHERE name = 'UnityServe Volunteers'), 'Backpack Packing Event', 'Assembling school supply backpacks for students in need.', 'UnityServe Warehouse', '2026-08-01'),
 ((SELECT organization_id FROM organization WHERE name = 'UnityServe Volunteers'), 'Holiday Meal Delivery', 'Delivering hot meals to homebound seniors during the holidays.', 'Various Locations', '2026-12-20');
+
+
+
+
+-- ========================================
+-- Category Table
+-- ========================================
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(150) NOT NULL UNIQUE
+);
+
+-- ========================================
+-- Insert sample data: Categories
+-- ========================================
+INSERT INTO category (name)
+VALUES
+('Construction & Housing'),
+('Food & Hunger Relief'),
+('Environment & Sustainability'),
+('Education & Youth'),
+('Health & Wellness');
+
+-- ========================================
+-- Project_Category Junction Table
+-- (Many-to-Many: a project can have many categories,
+--  a category can have many projects)
+-- ========================================
+CREATE TABLE project_category (
+    project_id INT NOT NULL,
+    category_id INT NOT NULL,
+    PRIMARY KEY (project_id, category_id),
+    CONSTRAINT fk_project
+        FOREIGN KEY (project_id)
+        REFERENCES project(project_id),
+    CONSTRAINT fk_category
+        FOREIGN KEY (category_id)
+        REFERENCES category(category_id)
+);
+
+-- ========================================
+-- Insert sample data: Associate each project with at least 1 category
+-- ========================================
+INSERT INTO project_category (project_id, category_id)
+VALUES
+-- BrightFuture Builders projects
+((SELECT project_id FROM project WHERE title = 'Habitat Build Weekend'), (SELECT category_id FROM category WHERE name = 'Construction & Housing')),
+((SELECT project_id FROM project WHERE title = 'Community Center Renovation'), (SELECT category_id FROM category WHERE name = 'Construction & Housing')),
+((SELECT project_id FROM project WHERE title = 'Wheelchair Ramp Build'), (SELECT category_id FROM category WHERE name = 'Construction & Housing')),
+((SELECT project_id FROM project WHERE title = 'Wheelchair Ramp Build'), (SELECT category_id FROM category WHERE name = 'Health & Wellness')),
+((SELECT project_id FROM project WHERE title = 'Playground Restoration'), (SELECT category_id FROM category WHERE name = 'Construction & Housing')),
+((SELECT project_id FROM project WHERE title = 'Playground Restoration'), (SELECT category_id FROM category WHERE name = 'Education & Youth')),
+((SELECT project_id FROM project WHERE title = 'Storm Shelter Construction'), (SELECT category_id FROM category WHERE name = 'Construction & Housing')),
+
+-- GreenHarvest Growers projects
+((SELECT project_id FROM project WHERE title = 'Community Garden Planting'), (SELECT category_id FROM category WHERE name = 'Environment & Sustainability')),
+((SELECT project_id FROM project WHERE title = 'Community Garden Planting'), (SELECT category_id FROM category WHERE name = 'Food & Hunger Relief')),
+((SELECT project_id FROM project WHERE title = 'Urban Composting Workshop'), (SELECT category_id FROM category WHERE name = 'Environment & Sustainability')),
+((SELECT project_id FROM project WHERE title = 'Farmers Market Setup'), (SELECT category_id FROM category WHERE name = 'Food & Hunger Relief')),
+((SELECT project_id FROM project WHERE title = 'School Garden Build'), (SELECT category_id FROM category WHERE name = 'Education & Youth')),
+((SELECT project_id FROM project WHERE title = 'School Garden Build'), (SELECT category_id FROM category WHERE name = 'Environment & Sustainability')),
+((SELECT project_id FROM project WHERE title = 'Seed Distribution Day'), (SELECT category_id FROM category WHERE name = 'Food & Hunger Relief')),
+
+-- UnityServe Volunteers projects
+((SELECT project_id FROM project WHERE title = 'Winter Coat Drive'), (SELECT category_id FROM category WHERE name = 'Food & Hunger Relief')),
+((SELECT project_id FROM project WHERE title = 'Senior Center Visit Day'), (SELECT category_id FROM category WHERE name = 'Health & Wellness')),
+((SELECT project_id FROM project WHERE title = 'Blood Donation Drive'), (SELECT category_id FROM category WHERE name = 'Health & Wellness')),
+((SELECT project_id FROM project WHERE title = 'Backpack Packing Event'), (SELECT category_id FROM category WHERE name = 'Education & Youth')),
+((SELECT project_id FROM project WHERE title = 'Holiday Meal Delivery'), (SELECT category_id FROM category WHERE name = 'Food & Hunger Relief'));

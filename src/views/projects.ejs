@@ -1,29 +1,18 @@
 <%- include('partials/header') %>
-<main>
-    <h1><%= title %></h1>
-    <!-- Put your page-specific content here -->
-      <h1>Service Projects</h1>
-        <p><h2>Upcoming Service Projects</h2>
-<ul>
-    <li>Park Cleanup - Join us to clean up local parks and make them beautiful!</li>
-    <li>Food Drive - Help collect and distribute food to those in need.</li>
-    <li>Community Tutoring - Volunteer to tutor students in various subjects.</li>
-</ul></p>
-</main>
-<%- include('partials/footer') %>
+  <main>
+    <h1>
+      <%= title %>
+    </h1>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <h2>Upcoming Service Projects</h2>
+    <ul>
+      <% projects.forEach(function(project) { %>
+        <li>
+          <%= new Date(project.project_date).toLocaleDateString('en-US', { year: 'numeric' , month: 'long' ,
+            day: 'numeric' }) %>:
+            <%= project.title %> (<%= project.organization_name %>)
+        </li>
+        <% }); %>
+    </ul>
+  </main>
+  <%- include('partials/footer') %>

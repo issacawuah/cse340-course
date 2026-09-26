@@ -1,0 +1,64 @@
+<%- include('partials/header') %>
+<main>
+    <h1><%= title %></h1>
+
+    <form action="/edit-project/<%= project.project_id %>" method="POST">
+        <div class="form-group">
+            <label for="title">Project Title</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                maxlength="200"
+                required
+                value="<%= project.title %>"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea
+                id="description"
+                name="description"
+                maxlength="1000"
+                required
+            ><%= project.description %></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input
+                type="text"
+                id="location"
+                name="location"
+                maxlength="200"
+                required
+                value="<%= project.location %>"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="date">Project Date</label>
+            <input
+                type="date"
+                id="date"
+                name="date"
+                required
+                value="<%= project.date.toISOString().split('T')[0] %>"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="organizationId">Organization</label>
+            <select id="organizationId" name="organizationId" required>
+                <% organizations.forEach(organization => { %>
+                    <option value="<%= organization.organization_id %>" <%= organization.organization_id === project.organization_id ? 'selected' : '' %>><%= organization.name %></option>
+                <% }); %>
+            </select>
+        </div>
+
+        <button type="submit">Update Service Project</button>
+    </form>
+
+</main>
+<%- include('partials/footer') %>

@@ -7,15 +7,13 @@
         <p>Here are a few of our partner organizations:</p>
         <ul>
             <% organizations.forEach(organization=> { %>
-                <li><img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo"><a
-                        href="/organization/<%= organization.organization_id %>">
-                        <%= organization.name %>
-                    </a>: <%= organization.contact_email %>
-                </li>
+                <li><img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo"><a href="/organization/<%= organization.organization_id %>"><%= organization.name %></a>: <%= organization.contact_email %></li>
                 <% }); %>
         </ul>
 
-        <p><a href="/new-organization">Add a new organization</a></p>
+        <% if (user && user.role_name === 'admin') { %>
+            <p><a href="/new-organization">Add New Organization</a></p>
+        <% } %>
     </main>
 
     <%- include('partials/footer') %>

@@ -126,3 +126,31 @@ VALUES
 ((SELECT project_id FROM project WHERE title = 'Blood Donation Drive'), (SELECT category_id FROM category WHERE name = 'Health & Wellness')),
 ((SELECT project_id FROM project WHERE title = 'Backpack Packing Event'), (SELECT category_id FROM category WHERE name = 'Education & Youth')),
 ((SELECT project_id FROM project WHERE title = 'Holiday Meal Delivery'), (SELECT category_id FROM category WHERE name = 'Food & Hunger Relief'));
+
+-- ========================================
+-- Roles Table
+-- ========================================
+CREATE TABLE roles (
+    role_id SERIAL PRIMARY KEY,
+    role_name VARCHAR(50) UNIQUE NOT NULL,
+    role_description TEXT
+);
+
+-- ========================================
+-- Insert sample data: Roles
+-- ========================================
+INSERT INTO roles (role_name, role_description) VALUES 
+    ('user', 'Standard user with basic access'),
+    ('admin', 'Administrator with full system access');
+
+-- ========================================
+-- Users Table
+-- ========================================
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role_id INTEGER REFERENCES roles(role_id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

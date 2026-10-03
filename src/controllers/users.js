@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
-import { createUser, getUserByEmail, setResetToken, getUserByResetToken, updatePassword, authenticateUser } from '../models/users.js';
+import { createUser, getUserByEmail, setResetToken, getUserByResetToken, updatePassword, authenticateUser, getAllUsers } from '../models/users.js';
 import { sendResetEmail } from '../utils/email.js';
 
 const showUserRegistrationForm = (req, res) => {
@@ -147,7 +147,6 @@ const showDashboard = (req, res) => {
 
 /**
  * Middleware factory to require specific role for route access
- * Returns middleware that checks if user has the required role
  */
 const requireRole = (role) => {
     return (req, res, next) => {
@@ -165,6 +164,12 @@ const requireRole = (role) => {
     };
 };
 
+// Handles GET /users — admin-only page listing all registered users
+const showUsersPage = async (req, res) => {
+    const users = await getAllUsers();
+    res.render('users', { title: 'Registered Users', users });
+};
+
 export {
     showUserRegistrationForm,
     processUserRegistrationForm,
@@ -177,5 +182,6 @@ export {
     processLogout,
     requireLogin,
     showDashboard,
-    requireRole
+    requireRole,
+    showUsersPage
 };

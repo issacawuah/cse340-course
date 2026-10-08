@@ -1,4 +1,5 @@
 import express from 'express';
+import { processVolunteerSignup, processRemoveVolunteer } from './controllers/volunteers.js';
 
 import { showHomePage } from './controllers/index.js';
 import {
@@ -92,6 +93,10 @@ router.get('/logout', processLogout);
 
 // Protected dashboard route
 router.get('/dashboard', requireLogin, showDashboard);
+
+// Volunteer routes (must be logged in)
+router.post('/volunteer/:projectId', requireLogin, processVolunteerSignup);
+router.post('/remove-volunteer/:projectId', requireLogin, processRemoveVolunteer);
 
 // Admin-only: view all registered users
 router.get('/users', requireRole('admin'), showUsersPage);
